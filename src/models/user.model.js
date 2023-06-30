@@ -1,5 +1,5 @@
 import { DataTypes, Deferrable } from "sequelize";
-import dbConnection from "../utils/db.utils";
+import dbConnection from "../utils/db.utils.js";
 
 const sequelize = dbConnection();
 
