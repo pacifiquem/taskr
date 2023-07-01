@@ -33,25 +33,11 @@ const User = sequelize.define("User",{
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-    },
-    tasks: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-      references: {
-        model: "Task",
-        key: "identifier",
-        deferrable: Deferrable.INITIALLY_IMMEDIATE,
-      },
-    },
+    }
   },
   {
     tableName: "users",
   }
 );
-
-sequelize.sync().then(() => {
-  console.log(' User table created successfully.');
-}).catch((error) => {
-  console.error('Error creating table:', error.message);
-});
 
 export default User;

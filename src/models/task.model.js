@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes} from "sequelize";
+import { DataTypes} from "sequelize";
 import { sequelize } from "../utils/db.utils.js";
 
 const Task = sequelize.define("Task", {
@@ -13,32 +13,18 @@ const Task = sequelize.define("Task", {
   },
   completed: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    defaultValue: false
   },
   completedAt: {
     type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
+    allowNull: true
   },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
-  },
-  owner: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: "User",
-      key: "identifier",
-      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
-    }
   }
 }, {
   tableName: "tasks"
-});
-
-sequelize.sync().then(() => {
-  console.log('Task table created successfully.');
-}).catch((error) => {
-  console.error('Error creating table:', error.message);
 });
 
 export default Task;

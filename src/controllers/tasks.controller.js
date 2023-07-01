@@ -1,25 +1,28 @@
 import User from "../models/user.model.js";
+import Task from "../models/task.model.js";
 import { HTTP_STATUS_CODES } from "../enums/httpStatuses.enum.js";
 
 export const getAllTasks = async (req, res, next) => {
     try {
 
-        let tasks = User.findAll();
+        let tasks = await Task.findAll();
         res.status(HTTP_STATUS_CODES.OK).json({
             success: true,
             data: tasks
         });
 
     } catch (error) {
-        next(error);
+        res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message
+        });
     }
 }
 
 export const createNewTask = async (req, res, next) => {
     try {
 
-        let { title, description } = req.body
-        let owner = new Date().getMilliseconds();
+        let { title, description } = req.body;
 
         if((title == undefined || title == null) || (description == undefined || description == null)) {
             res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
@@ -29,9 +32,13 @@ export const createNewTask = async (req, res, next) => {
             return;
         }
 
-        let newTask = new User(title, description, owner);
+        let newTask = new Task({
+                title,
+                description
+            });
 
         if(newTask) {
+            await newTask.save()
             res.status(HTTP_STATUS_CODES.CREATED).json({
                 success: true,
                 data: req.body
