@@ -1,12 +1,10 @@
-import { Sequelize, DataTypes } from "sequelize";
-import dbConnection from "../utils/db.utils.js";
-
-const sequelize = dbConnection();
+import { Sequelize, DataTypes} from "sequelize";
+import { sequelize } from "../utils/db.utils.js";
 
 const Task = sequelize.define("Task", {
   identifier: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   title: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING, 
     allowNull: false
   },
   description: {
@@ -35,6 +33,12 @@ const Task = sequelize.define("Task", {
   }
 }, {
   tableName: "tasks"
+});
+
+sequelize.sync().then(() => {
+  console.log('Task table created successfully.');
+}).catch((error) => {
+  console.error('Error creating table:', error.message);
 });
 
 export default Task;

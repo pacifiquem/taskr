@@ -17,11 +17,31 @@ export const getAllTasks = async (req, res, next) => {
 
 export const createNewTask = async (req, res, next) => {
     try {
-        res.status(HTTP_STATUS_CODES.CREATED).json({
-            success: true,
-            data: req.body
-        });
+
+        let { title, description } = req.body
+        let owner = new Date().getMilliseconds();
+
+        if((title == undefined || title == null) || (description == undefined || description == null)) {
+            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+                success: false,
+                message: `title can't be null, description can't be null`
+            });
+            return;
+        }
+
+        let newTask = new User(title, description, owner);
+
+        if(newTask) {
+            res.status(HTTP_STATUS_CODES.CREATED).json({
+                success: true,
+                data: req.body
+            });
+        }
+
     } catch (error) {
-        next(error)
+        res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message
+        });
     }
 }

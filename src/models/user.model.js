@@ -1,7 +1,5 @@
 import { DataTypes, Deferrable } from "sequelize";
-import dbConnection from "../utils/db.utils.js";
-
-const sequelize = dbConnection();
+import { sequelize } from "../utils/db.utils.js";
 
 const User = sequelize.define("User",{
     
@@ -39,7 +37,7 @@ const User = sequelize.define("User",{
     tasks: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       references: {
-        model: "Task", // Update with the name of your Task model
+        model: "Task",
         key: "identifier",
         deferrable: Deferrable.INITIALLY_IMMEDIATE,
       },
@@ -49,5 +47,11 @@ const User = sequelize.define("User",{
     tableName: "users",
   }
 );
+
+sequelize.sync().then(() => {
+  console.log(' User table created successfully.');
+}).catch((error) => {
+  console.error('Error creating table:', error.message);
+});
 
 export default User;
