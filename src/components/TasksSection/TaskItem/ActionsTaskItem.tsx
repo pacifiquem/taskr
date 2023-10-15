@@ -4,6 +4,7 @@ import BtnEditTask from "./BtnEditTask";
 import BtnMarkAsImportant from "./BtnMarkAsImportant";
 import BtnDeleteTask from "./BtnDeleteTask";
 import BtnToggleCompleted from "./BtnToggleCompleted";
+import BtnCopyToClipBoard from "./BtnCopyToClipBoard";
 
 const ActionsTaskItem: React.FC<{ task: Task; isListInView1: boolean }> = ({
   task,
@@ -22,6 +23,7 @@ const ActionsTaskItem: React.FC<{ task: Task; isListInView1: boolean }> = ({
           isListInView1={isListInView1}
         />
         <BtnMarkAsImportant taskId={task.id} taskImportant={task.important} />
+        <BtnCopyToClipBoard taskDescription={task.description} taskTitle={task.title}/>
         <BtnDeleteTask taskId={task.id} />
         <BtnEditTask task={task} />
       </div>
